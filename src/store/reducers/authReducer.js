@@ -14,6 +14,8 @@ export default function authReducer(state = INITIAL_STATE , action){
            return (state , { userAuth:action.user , isRegister: true})
         case 'SIGN_IN':
            return (state , { userAuth:action.user , isAuthenticated: true})
+         case 'SIGN_OUT':
+           return (state , { isAuthenticated: false})   
            
         default:
            return state

@@ -4,7 +4,6 @@ import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {signIn} from './../../store/actions'
 import * as firebase from 'firebase'
-import FirebaseService from './../../firebase/firebaseService'
 // import {signIn , currentUserInfo} from './../../store/actions'
 import './LogIn.css'
 
@@ -16,11 +15,11 @@ class LogIn extends Component{
   constructor(){
       super()
       this.state = {
-          uid:'',
+         
           email:'',
           pass:'',
          }
-         this.handleSignIn = this.handleSignIn.bind(this)
+        this.handleSignIn = this.handleSignIn.bind(this)
         this.handleOnChange = this.handleOnChange.bind(this)
      
   }
@@ -28,27 +27,26 @@ class LogIn extends Component{
 
  handleSignIn(e){
      e.preventDefault();
-     
-     firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.pass)
-     .then((user) => {
-         this.setState({uid: user.uid})
-         console.log(this.state)
-         localStorage.setItem("currentUser" , user.uid)
-         this.props.logIn(this.state)
-         browserHistory.push('/')
+     this.props.logIn(this.state)
+    //  firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.pass)
+    //  .then((user) => {
+    //      this.setState({uid: user.uid})
+    //      console.log(this.state)
+    //      localStorage.setItem("currentUser" , user.uid)
+        
 
-        // firebase.database().ref('users/' + user.uid).on('value', (snapshot) =>{
-        //     const currentUser = snapshot.val()  
-        //     console.log(currentUser)
-        //     this.props.currentUser(currentUser)
-        //  })
+    //    firebase.database().ref().child(`users/${user.uid}`).on('value', (snapshot) =>{
+    //          const currentUser = snapshot.val()  
+    //          this.props.logIn(currentUser)
+    //          browserHistory.push('/')
+    //      })
          
-     }).catch(e => alert(e.message))
+    //  }).catch(e => alert(e.message))
 
  }
  
    handleOnChange(e){
-       this.setState({[e.target.name]: [e.terget.value]})
+       this.setState({[e.target.name]: [e.target.value]})
    }
     
     render(){

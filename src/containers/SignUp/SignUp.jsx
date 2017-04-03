@@ -29,24 +29,9 @@ export class SignUp extends Component{
     constructor(props){
       super(props)
       this.handleSignUp = this.handleSignUp.bind(this)
-      this.signUpWithAuth = this.signUpWithAuth.bind(this)
   }
 
-  signUpWithAuth(user){
-      firebase.auth().createUserWithEmailAndPassword(user.email,user.pass)
-      .then((data) => {
-         
-          user.uid = data.uid;
-          this.props.SignUp(user);//action Fire
-          firebase.database().ref().child(`users/${user.uid}`).set(user)
-          .then(() =>{
-              this.context.router.push("/login")
-          })
-         
-      })
-      .catch(e => console.log(e.message))
 
-  }
 
   handleSignUp(e){
          
@@ -60,7 +45,7 @@ export class SignUp extends Component{
              isDoner: false
          }
         console.log(user)
-       this.signUpWithAuth(user);
+       this.props.SignUp(user);
   }
  
     render(){

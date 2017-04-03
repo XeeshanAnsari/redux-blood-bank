@@ -1,6 +1,7 @@
-import React ,{ Component } from 'react'
+import React ,{ Component,PropTypes } from 'react'
 import * as MUI from 'material-ui'
 import {browserHistory , Link} from 'react-router'
+import {signOut} from './../../store/actions'
 import {connect} from 'react-redux'
 import * as firebase from 'firebase'
 import './AppBar.css'
@@ -9,48 +10,49 @@ import './AppBar.css'
 
 class AppBar extends Component{
 
+  static contextTypes = {
+      router: PropTypes.object.isRequired
+  }
 
   constructor(){
       super()
       this.state = {
           drawerOpen : false         
          }
-         this.handleDrawerToggle = this.handleDrawerToggle.bind(); 
+         this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+         this.handleLogOut = this.handleLogOut.bind(this)
      }
  
+  handleLogOut(e){
+      this.props.logOut();
+  }
+
   handleDrawerToggle(){
        this.setState({drawerOpen: !this.state.drawerOpen});
   }
 
-
-
+  
+//avater menu
 drawerMenu(){
     return (
       <div>
-          <div className="navigation-avatar-div">
-            <MUI.Avatar src="http://www.material-ui.com/images/uxceo-128.jpg"
-                    size={50}
-                    className="navigation-icon"/>
-            <span className="navigation-span">Hello World</span>
+          <div className="navigation-div">
+            
+            <span >{this.props.userAuth.firstName +" "+ this.props.userAuth.lastName}</span>
           </div>
           <MUI.MenuItem
               className="navigation-menuItem"
-              primaryText="Dashboard"
+              primaryText="View All Donor"
              
-              containerElement={<Link to="/dashboard"/>}
+              containerElement={<Link to="/viewDonors"/>}
             />
           <MUI.MenuItem
               className="navigation-menuItem"
-              primaryText="Register as Doner"
+              primaryText={this.props.userAuth.isDoner ? "Update Info": "Register As Doner"}
               
-              containerElement={<Link to="/dashboard/registerDonor"/>}
+              containerElement={<Link to="/donorRegister"/>}
             />
-          <MUI.MenuItem
-            className="navigation-menuItem"
-            primaryText="Doners"
-            
-            containerElement={<Link to="/dashboard/donorlist"/>}
-          />
+          
       </div>
     );
   }
@@ -67,11 +69,16 @@ drawerMenu(){
                                onLeftIconButtonTouchTap={this.handleDrawerToggle}
                                iconElementRight={
                                    <div>
+                                       {(this.props.isAuth) ?
                                        <div>
+                                            <Link to="/"  className='buttons'><MUI.RaisedButton  primary={true} onTouchTap={this.handleLogOut}>LogOut</MUI.RaisedButton></Link>                                             
+                                       </div>  
+                                       :
+                                         <div>
                                             <Link to="/login"  className='buttons'><MUI.RaisedButton primary={true} >LogIn</MUI.RaisedButton></Link>
                                             <Link to="/signup"  className='buttons'><MUI.RaisedButton  primary={true} >Sign Up</MUI.RaisedButton></Link> 
-                                  
-                                       </div>  
+                                         </div>
+                                       }
                                   </div>
                                }
 
@@ -92,13 +99,14 @@ drawerMenu(){
 
 function mapStateToProps(state){
     return {
-        
+        isAuth: state.authReducer.isAuthenticated,
+        userAuth: state.authReducer.userAuth
     }
 }
 
 function mapDispatchToProps(dispatch){
     return{
-        
+        logOut: () => dispatch(signOut())
     }
 }
 
