@@ -65,7 +65,7 @@ export function signOut(){
         .then(()=>{
           console.log("LogOut SuccessFully");
           dispatch(signOutWithSuccess());
-          browserHistory.push("/");
+          browserHistory.push("/login")
       })
       .catch(e => console.log(e.message))
     }

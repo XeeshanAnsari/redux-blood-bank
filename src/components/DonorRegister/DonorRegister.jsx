@@ -1,4 +1,4 @@
-import React ,{Component} from 'react'
+import React ,{Component ,PropTypes} from 'react'
 import * as MUI from 'material-ui'
 import {connect } from 'react-redux'
 import {browserHistory} from 'react-router'
@@ -7,7 +7,10 @@ import * as firebase from 'firebase'
 import './DonorRegister.css'
 
 export class DonorRegister extends Component{
-
+    
+    static contextTypes = {
+      router: PropTypes.object.isRequired
+  }
     constructor(){
       super()
       this.state = {
@@ -50,15 +53,19 @@ export class DonorRegister extends Component{
 
    
   }
+  componentWillReceiveProps(){
 
+  }
   componentWillMount(){
-      this.setState({
+     (this.props.isAuthenticated)
+     ? this.setState({
           firstName:this.props.userAuth.firstName,
           lastName:this.props.userAuth.lastName,
           address:this.props.userAuth.address,
           contactNo:this.props.userAuth.contactNo,
           bloodGroupValue:this.props.userAuth.bloodGroup,
       })
+      :this.context.router.push('/login')
       
   }
 //   handleOnChange(e){

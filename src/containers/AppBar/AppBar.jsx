@@ -5,7 +5,15 @@ import {signOut} from './../../store/actions'
 import {connect} from 'react-redux'
 import * as firebase from 'firebase'
 import './AppBar.css'
-
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBvFsLFrDIzQiC3Fkd8u-VyIHB-5TkJRBE",
+    authDomain: "blood-bank-1c490.firebaseapp.com",
+    databaseURL: "https://blood-bank-1c490.firebaseio.com",
+    storageBucket: "blood-bank-1c490.appspot.com",
+    messagingSenderId: "863780767346"
+  };
+ firebase.initializeApp(config);
 
 
 class AppBar extends Component{
@@ -38,7 +46,7 @@ drawerMenu(){
       <div>
           <div className="navigation-div">
             
-            <span >{this.props.userAuth.firstName +" "+ this.props.userAuth.lastName}</span>
+            <span >{ this.props.userAuth.firstName +" "+ this.props.userAuth.lastName}</span>
           </div>
           <MUI.MenuItem
               className="navigation-menuItem"
@@ -69,7 +77,7 @@ drawerMenu(){
                                onLeftIconButtonTouchTap={this.handleDrawerToggle}
                                iconElementRight={
                                    <div>
-                                       {(this.props.isAuth) ?
+                                       {(this.props.isAuthenticated) ?
                                        <div>
                                             <Link to="/"  className='buttons'><MUI.RaisedButton  primary={true} onTouchTap={this.handleLogOut}>LogOut</MUI.RaisedButton></Link>                                             
                                        </div>  
@@ -85,7 +93,7 @@ drawerMenu(){
                            />
                            <MUI.Drawer open={this.state.drawerOpen} docked={false}
                                 onRequestChange={this.handleDrawerToggle}>
-                               {this.drawerMenu()}
+                               {this.props.isAuthenticated ?this.drawerMenu(): null}
                             </MUI.Drawer>
                        {this.props.children} 
                       </div>   
@@ -99,7 +107,7 @@ drawerMenu(){
 
 function mapStateToProps(state){
     return {
-        isAuth: state.authReducer.isAuthenticated,
+        isAuthenticated: state.authReducer.isAuthenticated,
         userAuth: state.authReducer.userAuth
     }
 }

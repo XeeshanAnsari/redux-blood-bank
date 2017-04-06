@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component , PropTypes} from 'react'
 import * as MUI from 'material-ui'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
@@ -10,7 +10,10 @@ import {
 } from 'material-ui/Table';
 
 export class ViewDonors extends Component {
-
+  
+   static contextTypes = {
+      router: PropTypes.object.isRequired
+  }
     constructor() {
         super()
         this.state={
@@ -19,8 +22,9 @@ export class ViewDonors extends Component {
         }
     }
     componentWillMount() {
-       this.props.userAuth.isLoggIn
-       this.props.getDonors();
+       (this.props.isAuthenticated == true)
+        ? this.props.getDonors()
+        : this.context.router.push('/login')
    }
 
    //handleBloodgroup for search

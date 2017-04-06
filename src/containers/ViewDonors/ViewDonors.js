@@ -6,7 +6,8 @@ function mapStateToProps(state) {
     return {
         
         userAuth: state.authReducer.userAuth,
-        donors: state.donorReducer.donorList
+        donors: state.donorReducer.donorList,
+        isAuthenticated: state.authReducer.isAuthenticated
        
     };
 }

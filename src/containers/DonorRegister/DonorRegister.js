@@ -6,6 +6,7 @@ import {donorRegister} from './../../store/actions'
 function mapStateToProps(state) {
     return {
         userAuth: state.authReducer.userAuth,
+        isAuthenticated: state.authReducer.isAuthenticated
     };
 }
 
